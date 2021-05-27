@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Servicios</title>
+</head>
+
+<body ng-app="tarjetaCredito" ng-controller="tarjetasCreditoController">
+    <div class="container">
+        <div class="form-group">
+            <select ng-model="tarjetaCredito.clienteCedula">
+                <option value="{{ item.cedula }}" ng-repeat="item in data.clientes" > {{ item.nombres }}</option>
+            </select>
+        </div>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>nombre</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in data.clientes">
+                        <td> {{ item.nombres }}</td>
+                    </tr>
+                </tbody>                
+            </table>
+        </div>
+    </div>
+
+    <script src="js/angular.min.js.js"></script>
+    <script src="js/app1.js"></script> 
+</body>
+
+</html>

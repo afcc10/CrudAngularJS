@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Servicios</title>
+</head>
+
+<body ng-app="tarjetaCredito" ng-controller="tarjetasCreditoController">
+    <div class="container">
+        <form>
+            <div class="form-group">
+                <label>Titular</label>
+                <input class="form-control" type="text" name="titular" ng-model="tarjetaCredito.titular" />
+            </div>
+            <div class="form-group">
+                <label>Numero de la tarjeta</label>
+                <input class="form-control" type="text" name="numeroTarjeta" ng-model="tarjetaCredito.numeroTarjeta" placeholder="Numero de Tarjeta" maxlength="16"/>
+            </div>
+            <div class="form-group">
+                <label>Fecha Expiracion</label>
+                <input class="form-control" type="text" name="fechaExpiracion" ng-model="tarjetaCredito.fechaExpiracion" placeholder="DD/MM" maxlength="5"/>
+            </div>
+            <div class="form-group">
+                <label>CVV</label>
+                <input class="form-control" type="text" name="cvv" ng-model="tarjetaCredito.cvv" placeholder="CVV" maxlength="3"/>
+            </div>
+            <div class="form-group">                
+                <label>Fecha registo</label>
+                <input ng-model="tarjetaCredito.fecha" type="text" class="datepicker">
+            </div>
+            <div class="form-group">
+                <select ng-model="tarjetaCredito.clienteCedula" >
+                    <option value="{{ item.cedula }}" ng-repeat="item in data.clientes" > {{ item.nombres }}</option>
+                </select>
+            </div>
+            <input type="hidden" ng-model="tarjetaCredito.id"/>
+            <button type="submit" ng-click="GuardarTarjeta()" class="btn btn-default">Guardar</button>
+        </form>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Titular</th>
+                    <th>Numero de la tarjeta</th>
+                    <th>Fecha Expiracion</th>
+                    <th>CVV</th>
+                    <th>Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="tarjeta in data.tarjetasCredito">
+                    <td>{{ tarjeta.titular }}</td>
+                    <td>{{ tarjeta.numeroTarjeta }}</td>
+                    <td>{{ tarjeta.fechaExpiracion }}</td>
+                    <td>{{ tarjeta.cvv }}</td>
+                    <td>
+                        <a href="#" ng-click="editar(tarjeta.id)">editar</a> |
+                        <a href="#" ng-click="eliminarTarjeta(tarjeta.id)">borrar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!--Modal Mensajes-->
+    <div id="modalMensajes" class="modal bottom-sheet">
+        <div class="modal-content">
+            <h4 class="green-text">Exitoso!</h4>
+            <span ng-bind="mensajes.exitoso"></span>
+        </div>
+    </div>
+
+    <!--Modal Mensajes Error-->
+    <div id="modalErrores" class="modal bottom-sheet">
+        <div class="modal-content">
+            <h4 class="red-text">Error!</h4>
+            <span ng-bind="mensajes.error"></span>
+        </div>
+    </div>
+
+    <!--Modal Mensajes Validaciones-->
+    <div id="modalValidaciones" class="modal bottom-sheet">
+            <div class="modal-content">
+                <h4 class="orange-text">Atencion!</h4>
+                <span ng-bind="mensajes.validacion"></span>
+            </div>
+        </div>
+
+    <script src="js/angular.min.js.js"></script>
+    <script src="js/app1.js"></script>    
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.1/js/materialize.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-materialize/0.2.2/angular-materialize.min.js"></script>
+
+     <!--Import materialize.css-->
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+
+
+    <script>
+
+        //Inicializar componentes de Materialize
+        $('select').material_select();
+        $('.modal').modal();
+        $(".button-collapse").sideNav();
+        $('.datepicker').pickadate({
+            monthsFull: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            monthsShort: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+            weekdaysFull: ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'],
+            weekdaysShort: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+            labelMonthNext: 'Siguiente mes',
+            labelMonthPrev: 'Mes anterior',
+            labelMonthSelect: 'Seleccionar un mes',
+            labelYearSelect: 'Seleccionar un año',
+            format: 'yyyy-mm-dd',
+            min: new Date(),
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 15, // Creates a dropdown of 15 years to control year,
+            today: 'Hoy',
+            clear: 'Cancelar',
+            close: 'Ok',
+            closeOnSelect: false // Close upon selecting a date,
+        });
+
+    </script>
+</body>
+
+</html>
